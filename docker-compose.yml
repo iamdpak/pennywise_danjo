@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports: ["8000:8000"]
+    env_file: .env
+    depends_on: [db, redis]
+  worker:
+    build: .
+    command: celery -A pennywise_api.celery_app worker -l info
+    env_file: .env
+    depends_on: [web, redis, db]
+  beat:
+    build: .
+    command: celery -A pennywise_api.celery_app beat -l info
+    env_file: .env
+    depends_on: [redis]
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+volumes: { pgdata: {} }
