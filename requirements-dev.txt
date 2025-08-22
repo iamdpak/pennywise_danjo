@@ -1,0 +1,9 @@
+-r requirements.txt
+
+# Dev/debug
+django-debug-toolbar>=4.3
+ipython>=8.24
+pytest>=8.0
+pytest-django>=4.8
+black>=24.0
+flake8>=7.0

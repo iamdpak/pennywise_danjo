@@ -1,0 +1,24 @@
+# --- Core framework ---
+Django>=5.0,<6.0
+
+# --- Database driver (Postgres) ---
+psycopg2-binary>=2.9
+
+# --- REST framework ---
+djangorestframework>=3.15
+
+# --- API schema / docs ---
+drf-spectacular>=0.27
+drf-spectacular-sidecar>=2024.7.1   # optional: Swagger UI assets
+
+# --- Task queue + broker (Celery + Redis) ---
+celery[redis]>=5.3
+
+# --- Deployment server (if you later run Gunicorn in prod) ---
+gunicorn>=21.2
+
+# --- Common image/file utils ---
+Pillow>=10.0
+
+# --- Environment variable management (if you use it) ---
+python-decouple>=3.8
