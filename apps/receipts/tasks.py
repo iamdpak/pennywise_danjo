@@ -4,6 +4,7 @@ from django.db import transaction
 from .models import Job, Receipt, Merchant, Category, ReceiptItem
 from .services.llm_adapter import LLMAdapter
 from .services.embedding import EmbeddingIndex
+
 @shared_task
 def process_receipt_job(job_id: int, image_uri: str):
     job = Job.objects.get(id=job_id)

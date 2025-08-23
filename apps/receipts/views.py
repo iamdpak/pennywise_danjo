@@ -23,13 +23,6 @@ class HealthView(APIView):
     def get(self, request): 
         return Response({"status":"ok"})
     
-class ParseReceiptView(APIView):
-    def post(self, request):
-        image_uri = request.data.get("image_uri")
-        if not image_uri: 
-            return Response({"detail":"image_uri required"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"preview": True, "image_uri": image_uri})
-    
 class IngestReceiptView(APIView):
     def post(self, request):
         image_uri = request.data.get("image_uri")
