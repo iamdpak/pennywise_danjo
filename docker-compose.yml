@@ -86,5 +86,35 @@ services:
   #     redis:
   #       condition: service_started
 
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioaccess
+      MINIO_ROOT_PASSWORD: miniosecret
+    ports:
+      - "9000:9000"  # S3 API
+      - "9001:9001"  # Web console
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # one-time init to create a bucket (optional but handy)
+  minio-init:
+    image: minio/mc:latest
+    depends_on: [minio]
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set local http://minio:9000 minioaccess miniosecret &&
+      /usr/bin/mc mb -p local/receipts || true &&
+      /usr/bin/mc anonymous set download local/receipts || true
+      "
+    restart: "no"
+
 volumes:
   pgdata: {}
+  minio_data:
