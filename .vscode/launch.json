@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: upload_ingest.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/tests/upload_ingest.py",
+      "args": [
+        "${workspaceFolder}/tests/data/receipt2.jpg"        
+      ],
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}
