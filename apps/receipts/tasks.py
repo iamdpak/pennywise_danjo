@@ -11,7 +11,8 @@ def process_receipt_job(job_id: int, image_uri: str):
     job.status = Job.RUNNING; job.started_at = timezone.now()
     job.save(update_fields=["status","started_at"])
     try:
-        adapter = LLMAdapter(); result = adapter.parse_receipt(image_uri)
+        adapter = LLMAdapter(); 
+        result = adapter.parse_receipt(image_uri)
         with transaction.atomic():
             merchant, _ = Merchant.objects.get_or_create(
                 name=result.merchant.get("name","Unknown"),

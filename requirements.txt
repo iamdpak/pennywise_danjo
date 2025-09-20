@@ -20,5 +20,8 @@ gunicorn>=21.2
 # --- Common image/file utils ---
 Pillow>=10.0
 
+# --- HTTP client ---
+requests>=2.32
+
 # --- Environment variable management (if you use it) ---
 python-decouple>=3.8

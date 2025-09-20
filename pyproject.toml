@@ -17,5 +17,6 @@ dependencies = [
   "boto3>=1.34",
   "django-storages>=1.14",
   "pydantic>=2.7",
-  "faiss-cpu>=1.8.0"
+  "faiss-cpu>=1.8.0",
+  "requests>=2.32"
 ]
