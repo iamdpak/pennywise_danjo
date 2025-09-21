@@ -20,7 +20,8 @@ def process_receipt_job(job_id: int, image_uri: str):
                           "normalized_name":result.merchant.get("name","").lower()},
             )
             category = None
-            if result.category: category, _ = Category.objects.get_or_create(name=result.category)
+            if result.category: 
+                category, _ = Category.objects.get_or_create(name=result.category)
             receipt = Receipt.objects.create(
                 uuid=result.uuid,total=result.total,currency=result.currency,purchased_at=result.purchased_at,
                 merchant=merchant,category=category,image_uri=image_uri,raw_json=result.raw_json,

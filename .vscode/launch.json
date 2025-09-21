@@ -12,6 +12,12 @@
       "envFile": "${workspaceFolder}/.env",
       "console": "integratedTerminal",
       "justMyCode": false
+    },
+    {
+      "name": "Attach to Django (container)",
+      "type": "python",
+      "request": "attach",
+      "connect": {"host": "localhost", "port": 5678}
     }
   ]
 }

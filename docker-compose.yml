@@ -28,19 +28,44 @@ services:
       - .:/app:cached
     ports:
       - "8000:8000"
+      - "5678:5678"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_started
-    # Auto-run migrations each time the container starts (dev convenience)
-    command: >
-      bash -lc "
-      echo 'Waiting for DB...' &&
-      until nc -z db 5432; do sleep 1; done &&
-      python manage.py migrate --noinput || true &&
-      python manage.py runserver 0.0.0.0:8000
-      "
+    # Run the dev server under debugpy so VS Code can attach
+    command: ["python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django-cli
+    env_file:
+      - .env
+    environment:
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-pennywise_api.settings}
+      DEBUG: ${DEBUG:-1}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-postgres}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
+      SECRET_KEY: dev-secret-change-me
+    volumes:
+      - .:/app:cached
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    stdin_open: true
+    tty: true
+    # Keep the container idle so you can exec or override commands as needed
+    command: ["sleep", "infinity"]
 
   db:
     image: postgres:16

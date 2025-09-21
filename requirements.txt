@@ -23,5 +23,10 @@ Pillow>=10.0
 # --- HTTP client ---
 requests>=2.32
 
+# --- Vector search backend ---
+faiss-cpu>=1.8.0
+
 # --- Environment variable management (if you use it) ---
 python-decouple>=3.8
+
+debugpy
